@@ -36,7 +36,7 @@
     }
     @keyframes fall{ 0%{transform:translateY(-8vh)} 100%{transform:translateY(110vh) translateX(60px) rotate(360deg)} }
 
-    /* UI (як було) */
+    /* картки/кнопки (як було) */
     .card{ position:relative; background:var(--panel); border:1px solid rgba(255,255,255,.08); border-radius:1.1rem;
       transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease, background-color .35s ease; overflow:hidden }
     .card:hover{ transform:translateY(-4px); border-color:rgba(255,255,255,.22); box-shadow: var(--glow), var(--glow-pink) }
@@ -50,13 +50,16 @@
     .btn:hover{ border-color:rgba(255,255,255,.24); transform:translateY(-2px) }
     .btn-primary{ background:linear-gradient(90deg,var(--accent),var(--sakura-strong)); color:#0D1117; border-color:transparent; box-shadow:var(--glow) }
     .btn-primary:hover{ box-shadow: var(--glow), 0 0 0 6px rgba(255,79,139,.18) }
-    .navlink{ position:relative }
+
+    /* навлінки */
+    .navlink{ position:relative; text-decoration:none }
     .navlink::after{ content:""; position:absolute; left:0; bottom:-6px; height:2px; width:0%; background:linear-gradient(90deg,var(--accent),var(--sakura-strong)); transition:width .25s ease }
     .navlink:hover::after{ width:100% }
+
     .gradient-text{ background:linear-gradient(90deg,var(--accent),var(--sakura-strong)); -webkit-background-clip:text; background-clip:text; color:transparent; background-size:220% 100%; animation:gradientShift 8s ease-in-out infinite }
     @keyframes gradientShift{ 0%{background-position:0 50%} 50%{background-position:100% 50%} 100%{background-position:0 50%} }
 
-    /* reveal (як було) */
+    /* reveal */
     @media (prefers-reduced-motion:no-preference){
       .reveal{ opacity:0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease }
       .reveal.is-visible{ opacity:1; transform: translateY(0) }
@@ -66,31 +69,40 @@
       .scale-in.is-visible{ transform: scale(1) }
     }
 
-    /* --------- TOPBAR: прозорий/glass блок --------- */
+    /* ─── TOPBAR: плоска повної ширини ─── */
     .topbar{
-      position:fixed; top:16px; left:50%; transform:translateX(-50%); z-index:40;
-      width:min(1200px, 92vw);
-      background:rgba(17,24,39,.45);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:16px;
+      position:fixed; inset-inline:0; top:0; z-index:40;
+      height:64px;
+      background:rgba(10,14,22,.65);
       backdrop-filter:saturate(1.1) blur(10px);
-      padding:12px 18px;
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
-    .topbar-inner{ display:flex; align-items:center; justify-content:space-between; gap:20px }
-    .topbar nav a{ color:var(--text); text-decoration:none; font-weight:600; opacity:.9 }
+    .topbar-inner{
+      max-width:1200px; margin:0 auto; height:100%;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 20px;
+    }
+    .topbar nav a{
+      color:var(--text); font-weight:700; opacity:.9;
+      padding:8px 12px; border-radius:10px; border:1px solid transparent;
+      transition:opacity .2s ease, background-color .2s ease, border-color .2s ease;
+    }
     .topbar nav a:hover{ opacity:1 }
+    /* активний пункт як “прямокутна кнопка” */
+    .topbar nav a.is-active{
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.25);
+    }
 
-    /* --------- HERO по центру --------- */
+    /* ─── HERO по центру ─── */
     .hero{
-      min-height:100vh;
-      display:flex; align-items:center; justify-content:center;
-      text-align:center; position:relative;
-      padding:120px 20px 88px; /* запас під topbar і стрілку */
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      text-align:center; position:relative; padding:96px 20px 88px;
     }
     .hero h1{ font-size:clamp(48px,7vw,110px); line-height:1; font-weight:800; margin:0 0 16px }
     .hero p{ font-size:clamp(16px,2vw,22px); margin:0 0 28px }
 
-    /* --------- Стрілка: підскок кожні 4 секунди --------- */
+    /* Стрілка — підскок кожні 4с */
     .hero-arrow{ position:absolute; left:50%; transform:translateX(-50%); bottom:28px }
     .arrow{ width:48px; height:48px; border-radius:999px; border:1px solid rgba(255,255,255,.28); display:grid; place-items:center; color:var(--text); background:rgba(255,255,255,.02) }
     .arrow svg{ width:20px; height:20px; fill:currentColor }
@@ -101,8 +113,14 @@
       .hero-arrow{ animation:arrowBounceLoop 4s cubic-bezier(.22,.72,.37,1) infinite }
     }
 
+    /* сітки */
+    .hero-grid{ display:grid; gap:3rem; grid-template-columns:1fr }
+    @media (min-width:900px){ .hero-grid{ grid-template-columns:1.05fr .95fr } }
+    .cards-grid{ display:grid; gap:1rem; grid-template-columns:1fr }
+    @media (min-width:580px){ .cards-grid{ grid-template-columns:repeat(2,minmax(0,1fr)) } }
+
     /* якірні секції не ховаються під topbar */
-    section[id]{ scroll-margin-top:96px }
+    section[id]{ scroll-margin-top:80px }
   </style>
 </head>
 <body>
@@ -118,20 +136,20 @@
     <div class="petal" style="left:87%; animation-duration:13.5s; animation-delay:.6s;"></div>
   </div>
 
-  <!-- прозорий topbar -->
+  <!-- TOPBAR -->
   <div class="topbar">
     <div class="topbar-inner">
       <a href="#top" class="font-extrabold tracking-tight" style="font-size:18px;">A1x</a>
-      <nav class="hidden md:flex items-center gap-7">
-        <a href="#about" class="navlink muted hover:text-white transition-colors">About</a>
-        <a href="#skills" class="navlink muted hover:text-white transition-colors">Skills</a>
-        <a href="#experience" class="navlink muted hover:text-white transition-colors">Experience</a>
-        <a href="#contact" class="navlink muted hover:text-white transition-colors">Contact</a>
+      <nav class="hidden md:flex items-center gap-3">
+        <a href="#about" class="navlink muted">About</a>
+        <a href="#skills" class="navlink muted">Skills</a>
+        <a href="#experience" class="navlink muted">Experience</a>
+        <a href="#contact" class="navlink muted">Contact</a>
       </nav>
     </div>
   </div>
 
-  <!-- HERO по центру -->
+  <!-- HERO -->
   <section id="top" class="hero">
     <div>
       <h1 class="reveal" data-reveal-delay="60">A1x</h1>
@@ -269,10 +287,10 @@
   </footer>
 
   <script>
-    // поточний рік
+    // рік
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // reveal (твій код)
+    // reveal
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(!prefersReduced){
       const items = [...document.querySelectorAll('.reveal')];
@@ -288,21 +306,22 @@
       items.forEach(el=>io.observe(el));
     }
 
-    // активний пункт меню для topbar
+    // активний пункт меню -> клас .is-active (рамка + фон)
     const sections = [...document.querySelectorAll('section[id]')];
     const navLinks = [...document.querySelectorAll('.topbar nav a')];
-    const byId = id => navLinks.find(a => a.getAttribute('href') === `#${id}`);
-    const obs = new IntersectionObserver(entries=>{
+    const linkById = id => navLinks.find(a => a.getAttribute('href') === `#${id}`);
+
+    const spy = new IntersectionObserver(entries=>{
       entries.forEach(e=>{
-        const a = byId(e.target.id);
+        const a = linkById(e.target.id);
         if(!a) return;
         if(e.isIntersecting){
-          navLinks.forEach(n=>n.classList.remove('text-white'));
-          a.classList.add('text-white');
+          navLinks.forEach(n => n.classList.remove('is-active'));
+          a.classList.add('is-active');
         }
       });
-    },{ threshold:.5 });
-    sections.forEach(s=>obs.observe(s));
+    },{ threshold:.55 });
+    sections.forEach(s => spy.observe(s));
   </script>
 </body>
 </html>
