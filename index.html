@@ -3,80 +3,120 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>0x_mythos — Portfolio</title>
+  <title>Your Name — Portfolio</title>
   <meta name="description" content="Portfolio of Your Name: community manager, moderator, ambassador, and web tools builder." />
+
+  <!-- Custom font -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Обери шрифт: Sora / Plus Jakarta Sans / Inter / Outfit -->
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-    :root {
-      --bg:#0b0b10; --panel:#111218; --muted:#a7aab6; --accent:#7c5cff;
-      --ring:0 0 0 10px rgba(124,92,255,.08);
+    :root{
+      /* ЛЕГКО МІНЯТИ КОЛЬОРИ ТУТ */
+      --bg:#0b0c10;            /* фон */
+      --panel:#11131a;         /* панелі/картки */
+      --muted:#a6adbb;         /* вторинний текст */
+      --accent:#7c5cff;        /* акцент */
+      --accent-2:#22d3ee;      /* другий акцент для градієнта */
+      --ring:0 0 0 10px rgba(124,92,255,.10);
     }
-    html,body { background:var(--bg); color:#e5e7eb; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-    .glass { background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.06); backdrop-filter: blur(8px); }
-    .ring-focus:focus{ outline:none; box-shadow: var(--ring); }
-    .chip{border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.03)}
-    .muted{color:var(--muted)}
-    .accent{color:var(--accent)}
-    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.72rem 1rem;border-radius:.8rem;border:1px solid rgba(255,255,255,.08);background:#141625}
-    .btn:hover{border-color:rgba(255,255,255,.16)}
-    .btn-primary{background:var(--accent); color:#0b0b10; border-color:transparent}
-    .btn-primary:hover{filter:brightness(1.05)}
-    .section{padding-top:5rem;padding-bottom:5rem}
-    .card{background:var(--panel); border:1px solid rgba(255,255,255,.06); border-radius:1rem}
-    .metric{font-variant-numeric: tabular-nums}
+    html,body{ background:var(--bg); color:#e6e9ef; font-family:"Sora",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; }
+    .muted{ color:var(--muted); }
+    .card{ background:var(--panel); border:1px solid rgba(255,255,255,.07); border-radius:1.1rem }
+    .chip{ border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.03) }
+    .btn{ display:inline-flex; align-items:center; gap:.6rem; padding:.78rem 1.05rem; border-radius:1rem; border:1px solid rgba(255,255,255,.12); background:#141626; transition: transform .25s ease, border-color .25s ease, background-color .25s ease, box-shadow .25s ease }
+    .btn:hover{ border-color:rgba(255,255,255,.22); transform: translateY(-1px) }
+    .btn:active{ transform: translateY(0) scale(.99) }
+    .btn-primary{ background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#0b0c10; border-color:transparent; box-shadow:0 10px 30px -10px rgba(124,92,255,.55) }
+    .btn-primary:hover{ filter:brightness(1.06) }
+    .ring-focus:focus{ outline:none; box-shadow: var(--ring) }
+
+    /* Анімований градієнт заголовка */
+    .gradient-text{
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      background-size: 200% 100%; animation: gradientShift 8s ease-in-out infinite;
+    }
+    @keyframes gradientShift{
+      0%{ background-position: 0% 50% }
+      50%{ background-position: 100% 50% }
+      100%{ background-position: 0% 50% }
+    }
+
+    /* Скрол-анімації */
+    @media (prefers-reduced-motion:no-preference){
+      .reveal{ opacity:0; transform: translateY(16px); transition: opacity .7s ease, transform .7s ease }
+      .reveal.is-visible{ opacity:1; transform: translateY(0) }
+      .fade-up{ }
+      .fade-right{ transform: translateX(-18px) }
+      .fade-right.is-visible{ transform: translateX(0) }
+      .scale-in{ transform: scale(.96); opacity:0 }
+      .scale-in.is-visible{ transform: scale(1); opacity:1 }
+    }
+
+    /* Лінки в шапці — анімоване підкреслення */
+    .navlink{ position:relative }
+    .navlink::after{
+      content:""; position:absolute; left:0; bottom:-6px; height:2px; width:0%;
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      transition: width .25s ease
+    }
+    .navlink:hover::after{ width:100% }
   </style>
 </head>
 <body>
-  <!-- Header / Nav -->
-  <header class="sticky top-0 z-30 backdrop-blur supports-[backdrop-filter]:bg-black/40">
+  <!-- Header -->
+  <header class="sticky top-0 z-30 backdrop-blur supports-[backdrop-filter]:bg-black/35">
     <div class="mx-auto max-w-6xl px-4">
       <div class="flex h-16 items-center justify-between">
-        <a href="#top" class="font-extrabold tracking-tight text-lg">Your<span class="accent">Name</span></a>
-        <nav class="hidden md:flex items-center gap-6">
-          <a href="#about" class="muted hover:text-white">About</a>
-          <a href="#skills" class="muted hover:text-white">Skills</a>
-          <a href="#experience" class="muted hover:text-white">Experience</a>
-          <a href="#contact" class="muted hover:text-white">Contact</a>
+        <a href="#top" class="font-extrabold tracking-tight text-lg">Your<span class="gradient-text">Name</span></a>
+        <nav class="hidden md:flex items-center gap-7">
+          <a href="#about" class="navlink muted hover:text-white transition-colors">About</a>
+          <a href="#skills" class="navlink muted hover:text-white transition-colors">Skills</a>
+          <a href="#experience" class="navlink muted hover:text-white transition-colors">Experience</a>
+          <a href="#contact" class="navlink muted hover:text-white transition-colors">Contact</a>
         </nav>
-        <div class="flex items-center gap-2">
-          <a href="#contact" class="btn btn-primary ring-focus">Hire me</a>
-        </div>
+        <a href="#contact" class="btn btn-primary ring-focus">Hire me</a>
       </div>
     </div>
   </header>
 
   <!-- Hero -->
   <main id="top">
-    <section class="section">
-      <div class="mx-auto max-w-6xl px-4 grid md:grid-cols-2 gap-10 items-center">
-        <div>
-          <span class="chip inline-flex px-3 py-1 rounded-full text-sm muted mb-4">Community • Moderation • Web Tools</span>
-          <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">Community Manager &<br class="hidden md:block" /> Web3-tools Builder</h1>
+    <section class="py-20 md:py-28">
+      <div class="mx-auto max-w-6xl px-4 grid md:grid-cols-2 gap-12 items-center">
+        <div class="reveal fade-up">
+          <span class="chip inline-flex px-3 py-1 rounded-full text-sm muted mb-5">Community • Moderation • Web Tools</span>
+          <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">Community Manager & <span class="gradient-text">Web3-tools Builder</span></h1>
           <p class="muted mt-4 text-lg">I help projects launch, moderate and grow thriving communities. I also build handy bots and ops tools for Discord, Telegram and the web.</p>
-          <div class="mt-6 flex flex-wrap gap-3">
+          <div class="mt-7 flex flex-wrap gap-3">
             <a href="#contact" class="btn btn-primary ring-focus">Let’s work</a>
             <a href="#experience" class="btn ring-focus">See experience</a>
             <a href="#skills" class="btn ring-focus">Tech stack</a>
           </div>
-          <div class="mt-8 grid grid-cols-3 gap-4">
-            <div class="card p-4 text-center">
-              <div class="metric text-3xl font-bold">2+</div>
+          <div class="mt-9 grid grid-cols-3 gap-4">
+            <div class="card p-5 text-center reveal scale-in">
+              <div class="text-3xl font-extrabold tabular-nums">2+</div>
               <div class="muted text-sm">Years in Web3</div>
             </div>
-            <div class="card p-4 text-center">
-              <div class="metric text-3xl font-bold">30+</div>
+            <div class="card p-5 text-center reveal scale-in">
+              <div class="text-3xl font-extrabold tabular-nums">30+</div>
               <div class="muted text-sm">Projects supported</div>
             </div>
-            <div class="card p-4 text-center">
-              <div class="metric text-3xl font-bold">10+</div>
+            <div class="card p-5 text-center reveal scale-in">
+              <div class="text-3xl font-extrabold tabular-nums">10+</div>
               <div class="muted text-sm">Bots & tools built</div>
             </div>
           </div>
         </div>
+
+        <!-- Side cards -->
         <div class="grid sm:grid-cols-2 gap-4">
-          <div class="card p-5 flex flex-col gap-3">
+          <div class="card p-5 flex flex-col gap-3 reveal fade-right">
             <div class="font-semibold">What I do</div>
             <ul class="list-disc list-inside muted space-y-1">
               <li>Community playbooks</li>
@@ -85,7 +125,7 @@
               <li>Feedback loops</li>
             </ul>
           </div>
-          <div class="card p-5 flex flex-col gap-3">
+          <div class="card p-5 flex flex-col gap-3 reveal fade-right">
             <div class="font-semibold">Automations</div>
             <ul class="list-disc list-inside muted space-y-1">
               <li>Discord/Telegram bots</li>
@@ -94,7 +134,7 @@
               <li>Ops dashboards</li>
             </ul>
           </div>
-          <div class="card p-5 flex flex-col gap-3 sm:col-span-2">
+          <div class="card p-5 flex flex-col gap-3 sm:col-span-2 reveal fade-up">
             <div class="font-semibold">Highlights</div>
             <ul class="grid sm:grid-cols-2 gap-2 muted">
               <li class="chip rounded-lg px-3 py-2">AMA hosting</li>
@@ -108,12 +148,12 @@
     </section>
 
     <!-- About -->
-    <section id="about" class="section border-t border-white/5">
+    <section id="about" class="py-20 border-t border-white/5">
       <div class="mx-auto max-w-5xl px-4 grid md:grid-cols-3 gap-10">
-        <div class="md:col-span-1">
+        <div class="md:col-span-1 reveal fade-up">
           <h2 class="text-2xl md:text-3xl font-bold">About</h2>
         </div>
-        <div class="md:col-span-2 space-y-4">
+        <div class="md:col-span-2 space-y-4 reveal fade-up">
           <p class="muted">I’m a community-first operator. My focus is setting up clear processes, healthy moderation and analytics so teams can scale without chaos.</p>
           <p class="muted">Comfortable working async, across time zones, and jumping from strategy to hands-on support.</p>
           <div class="flex flex-wrap gap-2">
@@ -126,11 +166,11 @@
     </section>
 
     <!-- Skills -->
-    <section id="skills" class="section border-t border-white/5">
+    <section id="skills" class="py-20 border-t border-white/5">
       <div class="mx-auto max-w-6xl px-4">
-        <h2 class="text-2xl md:text-3xl font-bold mb-8">Skills</h2>
+        <h2 class="text-2xl md:text-3xl font-bold mb-8 reveal fade-up">Skills</h2>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div class="card p-5">
+          <div class="card p-5 reveal fade-up">
             <div class="font-semibold mb-2">Community</div>
             <ul class="muted space-y-1 list-disc list-inside">
               <li>Moderation frameworks</li>
@@ -139,7 +179,7 @@
               <li>Metrics & health checks</li>
             </ul>
           </div>
-          <div class="card p-5">
+          <div class="card p-5 reveal fade-up">
             <div class="font-semibold mb-2">Content</div>
             <ul class="muted space-y-1 list-disc list-inside">
               <li>Announcements & docs</li>
@@ -148,7 +188,7 @@
               <li>Blog editing</li>
             </ul>
           </div>
-          <div class="card p-5">
+          <div class="card p-5 reveal fade-up">
             <div class="font-semibold mb-2">Automation</div>
             <ul class="muted space-y-1 list-disc list-inside">
               <li>Discord/Telegram bots</li>
@@ -157,7 +197,7 @@
               <li>Dashboards</li>
             </ul>
           </div>
-          <div class="card p-5">
+          <div class="card p-5 reveal fade-up">
             <div class="font-semibold mb-2">Ops</div>
             <ul class="muted space-y-1 list-disc list-inside">
               <li>Playbooks & roles</li>
@@ -166,7 +206,7 @@
               <li>Hiring & onboarding</li>
             </ul>
           </div>
-          <div class="card p-5">
+          <div class="card p-5 reveal fade-up">
             <div class="font-semibold mb-2">Design</div>
             <ul class="muted space-y-1 list-disc list-inside">
               <li>Structure & IA</li>
@@ -175,7 +215,7 @@
               <li>Accessibility basics</li>
             </ul>
           </div>
-          <div class="card p-5">
+          <div class="card p-5 reveal fade-up">
             <div class="font-semibold mb-2">Tools</div>
             <ul class="muted space-y-1 list-disc list-inside">
               <li>Discord / Telegram</li>
@@ -189,12 +229,11 @@
     </section>
 
     <!-- Experience -->
-    <section id="experience" class="section border-t border-white/5">
+    <section id="experience" class="py-20 border-t border-white/5">
       <div class="mx-auto max-w-6xl px-4">
-        <h2 class="text-2xl md:text-3xl font-bold mb-8">Experience</h2>
+        <h2 class="text-2xl md:text-3xl font-bold mb-8 reveal fade-up">Experience</h2>
         <div class="space-y-4">
-          <!-- Role card -->
-          <article class="card p-5">
+          <article class="card p-5 reveal fade-up">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
               <h3 class="font-semibold text-lg">Community Manager — Project Alpha</h3>
               <span class="muted text-sm">2024 — Present • Remote</span>
@@ -206,7 +245,7 @@
             </ul>
           </article>
 
-          <article class="card p-5">
+          <article class="card p-5 reveal fade-up">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
               <h3 class="font-semibold text-lg">Moderator / Ambassador — Project Beta</h3>
               <span class="muted text-sm">2023 — 2024 • Hybrid</span>
@@ -222,24 +261,24 @@
     </section>
 
     <!-- Contact -->
-    <section id="contact" class="section border-t border-white/5">
+    <section id="contact" class="py-20 border-t border-white/5">
       <div class="mx-auto max-w-4xl px-4">
-        <h2 class="text-2xl md:text-3xl font-bold mb-6">Contact</h2>
-        <p class="muted mb-4">Open to community ops, moderation and tooling gigs. Best way to reach me:</p>
+        <h2 class="text-2xl md:text-3xl font-bold mb-6 reveal fade-up">Contact</h2>
+        <p class="muted mb-4 reveal fade-up">Open to community ops, moderation and tooling gigs. Best way to reach me:</p>
         <div class="grid sm:grid-cols-2 gap-4">
-          <a class="card p-4 hover:border-white/20" href="mailto:you@example.com" target="_blank" rel="noreferrer">
+          <a class="card p-4 hover:border-white/20 transition-colors reveal fade-up" href="mailto:you@example.com" target="_blank" rel="noreferrer">
             <div class="font-semibold">Email</div>
             <div class="muted">you@example.com</div>
           </a>
-          <a class="card p-4 hover:border-white/20" href="https://t.me/yourhandle" target="_blank" rel="noreferrer">
+          <a class="card p-4 hover:border-white/20 transition-colors reveal fade-up" href="https://t.me/yourhandle" target="_blank" rel="noreferrer">
             <div class="font-semibold">Telegram</div>
             <div class="muted">@yourhandle</div>
           </a>
-          <a class="card p-4 hover:border-white/20" href="https://discordapp.com/users/yourid" target="_blank" rel="noreferrer">
+          <a class="card p-4 hover:border-white/20 transition-colors reveal fade-up" href="https://discordapp.com/users/yourid" target="_blank" rel="noreferrer">
             <div class="font-semibold">Discord</div>
             <div class="muted">yourname#1234</div>
           </a>
-          <a class="card p-4 hover:border-white/20" href="https://x.com/yourhandle" target="_blank" rel="noreferrer">
+          <a class="card p-4 hover:border-white/20 transition-colors reveal fade-up" href="https://x.com/yourhandle" target="_blank" rel="noreferrer">
             <div class="font-semibold">X (Twitter)</div>
             <div class="muted">@yourhandle</div>
           </a>
@@ -257,10 +296,25 @@
   </footer>
 
   <script>
-    // year
+    // Поточний рік
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // simple active link highlight on scroll
+    // IntersectionObserver для скрол-анімацій
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!prefersReduced){
+      const items = [...document.querySelectorAll('.reveal')];
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            e.target.classList.add('is-visible');
+            io.unobserve(e.target);
+          }
+        });
+      },{ threshold:.18 });
+      items.forEach(el=>io.observe(el));
+    }
+
+    // Активний лінк в меню
     const sections = [...document.querySelectorAll('section[id]')];
     const navLinks = [...document.querySelectorAll('header nav a')];
     const byId = id => navLinks.find(a => a.getAttribute('href') === `#${id}`);
@@ -273,7 +327,7 @@
           a.classList.add('text-white');
         }
       });
-    }, { threshold: .4 });
+    }, { threshold: .5 });
     sections.forEach(s => obs.observe(s));
   </script>
 </body>
