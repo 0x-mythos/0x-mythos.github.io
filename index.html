@@ -1,36 +1,26 @@
 <!DOCTYPE html>
-<html lang="uk" class="scroll-smooth">
+<html lang="ук" class="scroll-smooth">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>0x-mythos — Portfolio</title>
   <meta name="description" content="Community, moderation, bots & web tools." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Шрифт під аніме/техно вайб -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root{
-      /* Палітра з аватарки */
-      --bg:#0D1117;          /* головний фон (темний метал) */
-      --panel:#111827;       /* картки/панелі */
-      --text:#E6E9EF;
-      --muted:#A6ADBB;
-
-      --accent:#FF7A18;      /* помаранчевий жакета */
-      --accent-amber:#FF8C2B;/* бурштин візора */
-      --sakura:#FFB7C5;      /* ніжна сакура */
-      --sakura-strong:#FF4F8B;/* насичена сакура */
-      --sky:#6EC3FF;         /* небо */
-
+      --bg:#0D1117; --panel:#111827; --text:#E6E9EF; --muted:#A6ADBB;
+      --accent:#FF7A18; --accent-amber:#FF8C2B;
+      --sakura:#FFB7C5; --sakura-strong:#FF4F8B; --sky:#6EC3FF;
       --ring:0 0 0 10px rgba(255,122,24,.14);
       --glow:0 14px 48px -14px rgba(255,122,24,.55);
       --glow-pink:0 14px 44px -16px rgba(255,79,139,.55);
     }
     html,body{ background:var(--bg); color:var(--text); font-family:"Outfit",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif }
 
-    /* Фонова сцена з гілками сакури (SVG) */
+    /* Фонова сцена */
     .scene{
       position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden;
       background:
@@ -41,11 +31,10 @@
     .branch-left{ left:-60px; top:20px; transform:rotate(-6deg) }
     .branch-right{ right:-40px; top:-10px; transform:scaleX(-1) rotate(-2deg) }
 
-    /* Летючі пелюстки */
+    /* Пелюстки */
     .petal{ position:absolute; width:10px; height:10px; border-radius:50%;
       background: radial-gradient(circle at 30% 30%, #fff 0%, var(--sakura) 60%, var(--sakura-strong) 100%);
-      opacity:.75; filter: blur(.2px);
-      animation: fall linear infinite;
+      opacity:.75; filter: blur(.2px); animation: fall linear infinite;
     }
     @keyframes fall{
       0%{ transform: translateY(-8vh) translateX(0) rotate(0) }
@@ -70,7 +59,8 @@
 
     .chip{ border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04) }
 
-    .btn{ display:inline-flex; align-items:center; gap:.6rem; padding:.82rem 1.12rem; border-radius:1rem;
+    .btn{
+      display:inline-flex; align-items:center; gap:.6rem; padding:.82rem 1.12rem; border-radius:1rem;
       border:1px solid rgba(255,255,255,.14); background:#141926;
       transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease, background-color .25s ease;
       will-change: transform;
@@ -78,7 +68,7 @@
     .btn:hover{ border-color:rgba(255,255,255,.24); transform:translateY(-2px) }
     .btn-primary{
       background:linear-gradient(90deg,var(--accent),var(--sakura-strong));
-      color:#0D1117; border-color:transparent; box-shadow:var(--glow);
+      color:#0D1117; border-color:transparent; box-shadow:var(--glow)
     }
     .btn-primary:hover{ box-shadow: var(--glow), 0 0 0 6px rgba(255,79,139,.18) }
 
@@ -97,7 +87,7 @@
     }
     @keyframes gradientShift{ 0%{background-position:0 50%} 50%{background-position:100% 50%} 100%{background-position:0 50%} }
 
-    /* Плавні появи з затримками (як було) */
+    /* Reveal (було у тебе — лишаю) */
     @media (prefers-reduced-motion:no-preference){
       .reveal{ opacity:0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease }
       .reveal.is-visible{ opacity:1; transform: translateY(0) }
@@ -107,38 +97,42 @@
       .scale-in.is-visible{ transform: scale(1) }
     }
 
-    /* Сітка героя */
+    /* Сітки */
     .hero-grid{ display:grid; gap:3rem; grid-template-columns:1fr }
     @media (min-width: 900px){ .hero-grid{ grid-template-columns:1.05fr .95fr } }
     .cards-grid{ display:grid; gap:1rem; grid-template-columns:1fr }
     @media (min-width: 580px){ .cards-grid{ grid-template-columns:repeat(2,minmax(0,1fr)) } }
 
-    /* ───────────── НОВЕ: підстрибування primary-кнопки кожні 4с ───────────── */
-    @media (prefers-reduced-motion: no-preference){
-      @keyframes btnHopCycle {
-        /* 0–10% — старт */
-        0%   { transform: translateY(0) }
-        12%  { transform: translateY(-12px) }
-        18%  { transform: translateY(0) }
-        22%  { transform: translateY(-6px) }
-        26%  { transform: translateY(0) }
-        /* 26–100% — пауза до наступного циклу */
-        100% { transform: translateY(0) }
-      }
-      /* запустимо тільки на .btn-primary у герої (щоб інші кнопки не стрибали) */
-      .hero-grid .btn.btn-primary{
-        animation: btnHopCycle 4s cubic-bezier(.22,.72,.37,1) infinite;
-        transform: translateZ(0); backface-visibility: hidden;
-      }
-      /* користувач навів — зупиняємо, щоб не заважало */
-      .hero-grid .btn.btn-primary:hover{ animation-play-state: paused }
+    /* ▼▼▼ НОВЕ: стрілка внизу героя — цикл “підстрибнув і пауза” кожні 3с ▼▼▼ */
+    .hero-arrow{
+      position:relative; display:flex; justify-content:center; margin-top:48px;
     }
+    .arrow-wrap{ position:absolute; left:50%; transform:translateX(-50%); bottom:-16px }
+    .arrow{
+      width:48px; height:48px; border-radius:999px; border:1px solid rgba(255,255,255,.28);
+      display:grid; place-items:center; color:var(--text); background:rgba(255,255,255,.02);
+    }
+    .arrow svg{ width:20px; height:20px; fill:currentColor }
+
+    /* Цикл: 0–40% — сам підскок; 40–100% — завмер. Тривалість 3s, infinite */
+    @keyframes arrowBounceLoop{
+      0%{    transform:translate(-50%,0) }
+      14%{   transform:translate(-50%,-18px) }
+      26%{   transform:translate(-50%,0) }
+      34%{   transform:translate(-50%,-8px) }
+      40%{   transform:translate(-50%,0) }
+      100%{  transform:translate(-50%,0) }
+    }
+    @media (prefers-reduced-motion:no-preference){
+      .arrow-wrap{ animation: arrowBounceLoop 3s cubic-bezier(.22,.72,.37,1) infinite }
+      .arrow:hover{ border-color:rgba(255,255,255,.45); background:rgba(255,255,255,.06) }
+    }
+    /* ▲▲▲ КІНЕЦЬ блоку для стрілки ▲▲▲ */
   </style>
 </head>
 <body>
-  <!-- Фонова сцена: гілки + пелюстки -->
+  <!-- Фонова сцена -->
   <div class="scene" aria-hidden="true">
-    <!-- Sakura branches (простий SVG) -->
     <svg class="branch-left" viewBox="0 0 400 260">
       <path d="M10,240 C120,220 160,160 240,120 C300,90 350,60 390,20" fill="none" stroke="#2a3344" stroke-width="18" stroke-linecap="round"/>
       <g fill="#FFB7C5">
@@ -159,8 +153,6 @@
         <circle cx="135" cy="190" r="4"/><circle cx="210" cy="150" r="4"/><circle cx="285" cy="110" r="4"/>
       </g>
     </svg>
-
-    <!-- кілька пелюсток -->
     <div class="petal" style="left:5%; animation-duration:11s;"></div>
     <div class="petal" style="left:18%; animation-duration:13s; animation-delay:1s;"></div>
     <div class="petal" style="left:33%; animation-duration:14s; animation-delay:2s;"></div>
@@ -219,6 +211,16 @@
               <div class="muted text-sm">Bots & tools built</div>
             </div>
           </div>
+
+          <!-- Стрілка вниз (bounce-цикл 3с) -->
+          <div class="hero-arrow">
+            <div class="arrow-wrap">
+              <a class="arrow" href="#about" aria-label="Scroll to About">
+                <svg viewBox="0 0 24 24"><path d="M12 15.5c-.26 0-.51-.1-.71-.29l-6-6a1 1 0 0 1 1.42-1.42L12 12.59l5.29-5.3a1 1 0 1 1 1.42 1.42l-6 6c-.2.19-.45.29-.71.29z"/></svg>
+              </a>
+            </div>
+          </div>
+          <!-- /стрілка -->
         </div>
 
         <div class="cards-grid">
@@ -381,7 +383,7 @@
     // Поточний рік
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Появи з IntersectionObserver + стаґер (залишено як було)
+    // Появи (твій існуючий код)
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(!prefersReduced){
       const items = [...document.querySelectorAll('.reveal')];
@@ -397,7 +399,7 @@
       items.forEach(el=>io.observe(el));
     }
 
-    // Активний пункт меню (виправив шаблонний рядок)
+    // Активний пункт меню (виправлений шаблонний рядок)
     const sections = [...document.querySelectorAll('section[id]')];
     const navLinks = [...document.querySelectorAll('header nav a')];
     const byId = id => navLinks.find(a => a.getAttribute('href') === `#${id}`);
