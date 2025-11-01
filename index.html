@@ -6,9 +6,6 @@
   <title>0x-mythos — Portfolio</title>
   <meta name="description" content="Community, moderation, bots & web tools." />
 
-  <!-- Вмикаємо safe-mode для анімацій (якщо JS працює — додасть .js на <html>) -->
-  <script>document.documentElement.classList.add('js');</script>
-
   <!-- Шрифт -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -18,99 +15,35 @@
 
   <style>
     :root{
-      /* Палітра з аватарки */
-      --bg:#0D1117;          /* темний метал */
-      --panel:#111827;       /* панелі/картки */
-      --text:#E6E9EF;
-      --muted:#A6ADBB;
-
-      --accent:#FF7A18;      /* оранжевий жакета */
-      --accent2:#FF4F8B;     /* насичена сакура */
-      --sakura:#FFB7C5;      /* ніжна сакура */
-      --amber:#FF8C2B;       /* бурштин візора */
-
-      --ring:0 0 0 10px rgba(255,122,24,.14);
-      --glow:0 14px 48px -14px rgba(255,122,24,.55);
+      --bg:#0D1117; --panel:#111827; --text:#E6E9EF; --muted:#A6ADBB;
+      --accent:#FF7A18; --accent2:#FF4F8B; --amber:#FF8C2B; --sakura:#FFB7C5;
+      --ring:0 0 0 10px rgba(255,122,24,.14); --glow:0 14px 48px -14px rgba(255,122,24,.55);
     }
-
-    html,body{
-      background:var(--bg);
-      color:var(--text);
-      font-family:"Outfit",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-    }
-
+    html,body{ background:var(--bg); color:var(--text); font-family:"Outfit",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif }
     .muted{ color:var(--muted) }
 
-    /* ——— Картки / кнопки / навігація ——— */
-    .card{
-      background:var(--panel);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:1.1rem;
-      transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
-      overflow:hidden;
-    }
-    .card:hover{ transform:translateY(-4px); border-color:rgba(255,255,255,.22); box-shadow:var(--glow) }
+    /* Картки / кнопки / навігація */
+    .card{background:var(--panel); border:1px solid rgba(255,255,255,.08); border-radius:1.1rem; transition:.3s ease; overflow:hidden}
+    .card:hover{transform:translateY(-4px); border-color:rgba(255,255,255,.22); box-shadow:var(--glow)}
+    .chip{border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04)}
+    .btn{display:inline-flex; align-items:center; gap:.6rem; padding:.82rem 1.12rem; border-radius:1rem; border:1px solid rgba(255,255,255,.14); background:#141926; transition:.25s ease; white-space:nowrap}
+    .btn:hover{transform:translateY(-2px); border-color:rgba(255,255,255,.24)}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#0D1117; border-color:transparent; box-shadow:var(--glow)}
+    .navlink{position:relative}
+    .navlink::after{content:""; position:absolute; left:0; bottom:-6px; height:2px; width:0; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width .25s ease}
+    .navlink:hover::after{width:100%}
+    .grad{background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent}
 
-    .chip{ border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04) }
-
-    .btn{
-      display:inline-flex; align-items:center; gap:.6rem;
-      padding:.82rem 1.12rem; border-radius:1rem;
-      border:1px solid rgba(255,255,255,.14); background:#141926;
-      transition: transform .25s ease, border-color .25s ease;
-      white-space:nowrap;
-    }
-    .btn:hover{ transform:translateY(-2px); border-color:rgba(255,255,255,.24) }
-    .btn-primary{
-      background:linear-gradient(90deg,var(--accent),var(--accent2));
-      color:#0D1117; border-color:transparent; box-shadow:var(--glow);
-    }
-
-    .navlink{ position:relative }
-    .navlink::after{
-      content:""; position:absolute; left:0; bottom:-6px; height:2px; width:0%;
-      background:linear-gradient(90deg,var(--accent),var(--accent2));
-      transition:width .25s ease;
-    }
-    .navlink:hover::after{ width:100% }
-
-    /* ——— Герой: сітка та розміри (як у прикладі) ——— */
-    .hero{ padding-top:84px; padding-bottom:84px }
-    .hero-grid{ display:grid; gap:48px }
-    @media (min-width: 980px){
-      .hero-grid{ grid-template-columns: 1.06fr .94fr } /* співвідношення колонок */
-    }
-
-    .right-grid{ display:grid; gap:16px; grid-template-columns:1fr }
-    @media (min-width: 580px){
-      .right-grid{ grid-template-columns:repeat(2,minmax(0,1fr)) }
-    }
-    .right-grid .small{ min-height:170px; display:flex; flex-direction:column }
-    .right-grid .wide{ grid-column:1 / -1 }
-
-    .cta-row{ display:flex; gap:12px; flex-wrap:nowrap }  /* кнопки в один рядок */
-    .metric-card{
-      min-height:96px; display:flex; flex-direction:column;
-      align-items:center; justify-content:center;
-    }
-
-    /* ——— Плавні появи (safe-mode) ———
-       Працюють ТІЛЬКИ коли <html> має клас .js.
-       Якщо JS не завантажився — все видиме. */
-    @media (prefers-reduced-motion:no-preference){
-      .js .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease }
-      .js .reveal.is-visible{ opacity:1; transform:translateY(0) }
-      .js .fade-right{ transform:translateX(-18px) }
-      .js .fade-right.is-visible{ transform:translateX(0) }
-      .js .scale-in{ transform:scale(.96) }
-      .js .scale-in.is-visible{ transform:scale(1) }
-    }
-
-    /* Акцентний градієнт для назви */
-    .grad{
-      background:linear-gradient(90deg,var(--accent),var(--accent2));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-    }
+    /* Лейаут героя — як у референсі */
+    .hero{padding-top:84px; padding-bottom:84px}
+    .hero-grid{display:grid; gap:48px}
+    @media (min-width:980px){ .hero-grid{grid-template-columns:1.06fr .94fr} }
+    .right-grid{display:grid; gap:16px; grid-template-columns:1fr}
+    @media (min-width:580px){ .right-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+    .right-grid .small{min-height:170px; display:flex; flex-direction:column}
+    .right-grid .wide{grid-column:1/-1}
+    .cta-row{display:flex; gap:12px; flex-wrap:nowrap}
+    .metric-card{min-height:96px; display:flex; flex-direction:column; align-items:center; justify-content:center}
   </style>
 </head>
 <body>
@@ -134,67 +67,47 @@
   <main id="top">
     <section class="hero">
       <div class="mx-auto max-w-6xl px-4 hero-grid items-center">
-        <!-- Ліва колонка -->
+        <!-- Ліво -->
         <div class="max-w-xl">
-          <span class="chip inline-flex px-3 py-1 rounded-full text-sm muted mb-5 reveal" data-reveal-delay="60">
-            Community • Moderation • Web Tools
-          </span>
-
-          <h1 class="text-4xl md:text-6xl font-extrabold leading-tight reveal" data-reveal-delay="100">
-            Community Manager & <span class="grad">Web3-tools Builder</span>
-          </h1>
-
-          <p class="muted mt-4 text-lg reveal" data-reveal-delay="160">
-            I help projects launch, moderate and grow thriving communities. I also build handy bots and ops tools for Discord, Telegram and the web.
-          </p>
-
-          <!-- Кнопки: один рядок, як у референсі -->
-          <div class="cta-row mt-7 reveal" data-reveal-delay="220">
+          <span class="chip inline-flex px-3 py-1 rounded-full text-sm muted mb-5">Community • Moderation • Web Tools</span>
+          <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">Community Manager & <span class="grad">Web3-tools Builder</span></h1>
+          <p class="muted mt-4 text-lg">I help projects launch, moderate and grow thriving communities. I also build handy bots and ops tools for Discord, Telegram and the web.</p>
+          <div class="cta-row mt-7">
             <a href="#contact" class="btn btn-primary">Let’s work</a>
             <a href="#experience" class="btn">See experience</a>
             <a href="#skills" class="btn">Tech stack</a>
           </div>
-
-          <!-- Метрики (3 колонки) -->
           <div class="mt-9 grid grid-cols-3 gap-16 md:gap-10 lg:gap-6">
-            <div class="card metric-card p-5 text-center reveal scale-in" data-reveal-delay="80">
+            <div class="card metric-card p-5 text-center">
               <div class="text-3xl font-extrabold tabular-nums">2+</div>
               <div class="muted text-sm">Years in Web3</div>
             </div>
-            <div class="card metric-card p-5 text-center reveal scale-in" data-reveal-delay="140">
+            <div class="card metric-card p-5 text-center">
               <div class="text-3xl font-extrabold tabular-nums">30+</div>
               <div class="muted text-sm">Projects supported</div>
             </div>
-            <div class="card metric-card p-5 text-center reveal scale-in" data-reveal-delay="200">
+            <div class="card metric-card p-5 text-center">
               <div class="text-3xl font-extrabold tabular-nums">10+</div>
               <div class="muted text-sm">Bots & tools built</div>
             </div>
           </div>
         </div>
 
-        <!-- Права колонка (2 малі + 1 широка) -->
+        <!-- Право: 2 малі + широка -->
         <div class="right-grid">
-          <div class="card small p-5 reveal fade-right" data-reveal-delay="60">
+          <div class="card small p-5">
             <div class="font-semibold mb-2">What I do</div>
             <ul class="list-disc list-inside muted space-y-1">
-              <li>Community playbooks</li>
-              <li>Moderation & support</li>
-              <li>Launch campaigns</li>
-              <li>Feedback loops</li>
+              <li>Community playbooks</li><li>Moderation & support</li><li>Launch campaigns</li><li>Feedback loops</li>
             </ul>
           </div>
-
-          <div class="card small p-5 reveal fade-right" data-reveal-delay="120">
+          <div class="card small p-5">
             <div class="font-semibold mb-2">Automations</div>
             <ul class="list-disc list-inside muted space-y-1">
-              <li>Discord/Telegram bots</li>
-              <li>Onboarding flows</li>
-              <li>Role sync & logs</li>
-              <li>Ops dashboards</li>
+              <li>Discord/Telegram bots</li><li>Onboarding flows</li><li>Role sync & logs</li><li>Ops dashboards</li>
             </ul>
           </div>
-
-          <div class="card wide p-5 reveal" data-reveal-delay="180">
+          <div class="card wide p-5">
             <div class="font-semibold mb-2">Highlights</div>
             <ul class="grid sm:grid-cols-2 gap-2 muted">
               <li class="chip rounded-lg px-3 py-2">AMA hosting</li>
@@ -210,8 +123,8 @@
     <!-- About -->
     <section id="about" class="py-20 border-t border-white/5">
       <div class="mx-auto max-w-5xl px-4 grid md:grid-cols-3 gap-10">
-        <div class="md:col-span-1 reveal"><h2 class="text-2xl md:text-3xl font-bold">About</h2></div>
-        <div class="md:col-span-2 space-y-4 reveal">
+        <div class="md:col-span-1"><h2 class="text-2xl md:text-3xl font-bold">About</h2></div>
+        <div class="md:col-span-2 space-y-4">
           <p class="muted">I’m a community-first operator. My focus is setting up clear processes, healthy moderation and analytics so teams can scale without chaos.</p>
           <p class="muted">Comfortable working async, across time zones, and jumping from strategy to hands-on support.</p>
           <div class="flex flex-wrap gap-2">
@@ -226,39 +139,39 @@
     <!-- Skills -->
     <section id="skills" class="py-20 border-t border-white/5">
       <div class="mx-auto max-w-6xl px-4">
-        <h2 class="text-2xl md:text-3xl font-bold mb-8 reveal">Skills</h2>
+        <h2 class="text-2xl md:text-3xl font-bold mb-8">Skills</h2>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-16 md:gap-10 lg:gap-6">
-          <div class="card p-5 reveal">
+          <div class="card p-5">
             <div class="font-semibold mb-2">Community</div>
             <ul class="muted space-y-1 list-disc list-inside">
               <li>Moderation frameworks</li><li>Support SLAs</li><li>Onboarding journeys</li><li>Metrics & health checks</li>
             </ul>
           </div>
-          <div class="card p-5 reveal">
+          <div class="card p-5">
             <div class="font-semibold mb-2">Content</div>
             <ul class="muted space-y-1 list-disc list-inside">
               <li>Announcements & docs</li><li>Tutorials & FAQs</li><li>Twitter/Discord comms</li><li>Blog editing</li>
             </ul>
           </div>
-          <div class="card p-5 reveal">
+          <div class="card p-5">
             <div class="font-semibold mb-2">Automation</div>
             <ul class="muted space-y-1 list-disc list-inside">
               <li>Discord/Telegram bots</li><li>No-code tools (Sheets, Zapier)</li><li>Basic scripting</li><li>Dashboards</li>
             </ul>
           </div>
-          <div class="card p-5 reveal">
+          <div class="card p-5">
             <div class="font-semibold mb-2">Ops</div>
             <ul class="muted space-y-1 list-disc list-inside">
               <li>Playbooks & roles</li><li>Incident response</li><li>QA & audits</li><li>Hiring & onboarding</li>
             </ul>
           </div>
-          <div class="card p-5 reveal">
+          <div class="card p-5">
             <div class="font-semibold mb-2">Design</div>
             <ul class="muted space-y-1 list-disc list-inside">
               <li>Structure & IA</li><li>Wireframes</li><li>Brand consistency</li><li>Accessibility basics</li>
             </ul>
           </div>
-          <div class="card p-5 reveal">
+          <div class="card p-5">
             <div class="font-semibold mb-2">Tools</div>
             <ul class="muted space-y-1 list-disc list-inside">
               <li>Discord / Telegram</li><li>Notion / Linear</li><li>Figma</li><li>Google Suite</li>
@@ -271,9 +184,9 @@
     <!-- Experience -->
     <section id="experience" class="py-20 border-t border-white/5">
       <div class="mx-auto max-w-6xl px-4">
-        <h2 class="text-2xl md:text-3xl font-bold mb-8 reveal">Experience</h2>
+        <h2 class="text-2xl md:text-3xl font-bold mb-8">Experience</h2>
         <div class="space-y-4">
-          <article class="card p-5 reveal">
+          <article class="card p-5">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
               <h3 class="font-semibold text-lg">Community Manager — Project Alpha</h3>
               <span class="muted text-sm">2024 — Present • Remote</span>
@@ -284,8 +197,7 @@
               <li>Hosted monthly AMAs with 1–3k viewers.</li>
             </ul>
           </article>
-
-          <article class="card p-5 reveal">
+          <article class="card p-5">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
               <h3 class="font-semibold text-lg">Moderator / Ambassador — Project Beta</h3>
               <span class="muted text-sm">2023 — 2024 • Hybrid</span>
@@ -303,19 +215,19 @@
     <!-- Contact -->
     <section id="contact" class="py-20 border-t border-white/5">
       <div class="mx-auto max-w-4xl px-4">
-        <h2 class="text-2xl md:text-3xl font-bold mb-6 reveal">Contact</h2>
-        <p class="muted mb-4 reveal">Open to community ops, moderation and tooling gigs. Best way to reach me:</p>
+        <h2 class="text-2xl md:text-3xl font-bold mb-6">Contact</h2>
+        <p class="muted mb-4">Open to community ops, moderation and tooling gigs. Best way to reach me:</p>
         <div class="grid sm:grid-cols-2 gap-16 md:gap-10 lg:gap-6">
-          <a class="card p-4 hover:border-white/20 transition-colors reveal" href="mailto:you@example.com" target="_blank" rel="noreferrer">
+          <a class="card p-4 hover:border-white/20 transition-colors" href="mailto:you@example.com" target="_blank" rel="noreferrer">
             <div class="font-semibold">Email</div><div class="muted">you@example.com</div>
           </a>
-          <a class="card p-4 hover:border-white/20 transition-colors reveal" href="https://t.me/yourhandle" target="_blank" rel="noreferrer">
+          <a class="card p-4 hover:border-white/20 transition-colors" href="https://t.me/yourhandle" target="_blank" rel="noreferrer">
             <div class="font-semibold">Telegram</div><div class="muted">@yourhandle</div>
           </a>
-          <a class="card p-4 hover:border-white/20 transition-colors reveal" href="https://discordapp.com/users/yourid" target="_blank" rel="noreferrer">
+          <a class="card p-4 hover:border-white/20 transition-colors" href="https://discordapp.com/users/yourid" target="_blank" rel="noreferrer">
             <div class="font-semibold">Discord</div><div class="muted">yourname#1234</div>
           </a>
-          <a class="card p-4 hover:border-white/20 transition-colors reveal" href="https://x.com/yourhandle" target="_blank" rel="noreferrer">
+          <a class="card p-4 hover:border-white/20 transition-colors" href="https://x.com/yourhandle" target="_blank" rel="noreferrer">
             <div class="font-semibold">X (Twitter)</div><div class="muted">@yourhandle</div>
           </a>
         </div>
@@ -323,7 +235,6 @@
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="py-10 border-t border-white/5">
     <div class="mx-auto max-w-6xl px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
       <p class="muted text-sm">© <span id="y"></span> 0x-mythos. All rights reserved.</p>
@@ -332,38 +243,9 @@
   </footer>
 
   <script>
-    // Поточний рік
+    // Поточний рік (тільки це — без інших скриптів, щоб нічого не ламало рендер)
     document.getElementById('y').textContent = new Date().getFullYear();
-
-    // Плавні появи зі стаґером (спрацьовують лише коли є .js на <html>)
-    (function(){
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if(prefersReduced) return;
-
-      const items = Array.from(document.querySelectorAll('.reveal'));
-      if(items.length === 0) return;
-
-      const io = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting){
-            const d = Number(e.target.dataset.revealDelay || 0);
-            setTimeout(()=>e.target.classList.add('is-visible'), d);
-            io.unobserve(e.target);
-          }
-        });
-      },{ threshold:.16 });
-
-      items.forEach(el=>io.observe(el));
-    })();
-
-    // Активний пункт меню
-    (function(){
-      const sections = Array.from(document.querySelectorAll('section[id]'));
-      const navLinks = Array.from(document.querySelectorAll('header nav a'));
-      const byId = id => navLinks.find(a => a.getAttribute('href') === `#${id}`);
-      if(!sections.length) return;
-      const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          const a = byId(e.target.id);
-          if (!a) return;
-          if (e.
+    console.log('Base build loaded ✅');
+  </script>
+</body>
+</html>
