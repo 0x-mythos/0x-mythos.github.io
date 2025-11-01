@@ -1,38 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk" class="scroll-smooth">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>0x-mythos — Portfolio</title>
-  <meta name="description" content="Community, moderation, bots & web tools." />
+  <meta name="description" content="Community, moderation, bots & web tools.">
+
+  <!-- Увімкнути safe-mode для анімацій (JS додасть .js) -->
+  <script>document.documentElement.classList.add('js');</script>
+
+  <!-- Шрифт -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Шрифт під аніме/техно вайб -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind (лише для грідів/утиліт, основні стилі нижче) -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root{
-      /* Палітра з аватарки */
-      --bg:#0D1117;          /* головний фон (темний метал) */
-      --panel:#111827;       /* картки/панелі */
-      --text:#E6E9EF;
-      --muted:#A6ADBB;
-
-      --accent:#FF7A18;      /* помаранчевий жакета */
-      --accent-amber:#FF8C2B;/* бурштин візора */
-      --sakura:#FFB7C5;      /* ніжна сакура */
-      --sakura-strong:#FF4F8B;/* насичена сакура */
-      --sky:#6EC3FF;         /* небо */
-
+      /* палітра з аватарки */
+      --bg:#0D1117; --panel:#111827; --text:#E6E9EF; --muted:#A6ADBB;
+      --accent:#FF7A18; --accent2:#FF4F8B; --sakura:#FFB7C5; --amber:#FF8C2B; --sky:#6EC3FF;
       --ring:0 0 0 10px rgba(255,122,24,.14);
       --glow:0 14px 48px -14px rgba(255,122,24,.55);
       --glow-pink:0 14px 44px -16px rgba(255,79,139,.55);
     }
     html,body{ background:var(--bg); color:var(--text); font-family:"Outfit",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif }
+    .container{ max-width:1200px; margin:0 auto; padding:0 24px }
+    .muted{ color:var(--muted) }
 
-    /* Фонова сцена з гілками сакури (SVG) */
-    .scene{
-      position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden;
+    /* сцена сакури */
+    .scene{ position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden;
       background:
         radial-gradient(1200px 600px at 85% -10%, rgba(110,195,255,.35), transparent 60%),
         radial-gradient(1000px 500px at 0% 0%, rgba(255,183,197,.20), transparent 60%);
@@ -41,103 +39,71 @@
     .branch-left{ left:-60px; top:20px; transform:rotate(-6deg) }
     .branch-right{ right:-40px; top:-10px; transform:scaleX(-1) rotate(-2deg) }
 
-    /* Летючі пелюстки */
+    /* пелюстки */
     .petal{ position:absolute; width:10px; height:10px; border-radius:50%;
-      background: radial-gradient(circle at 30% 30%, #fff 0%, var(--sakura) 60%, var(--sakura-strong) 100%);
-      opacity:.75; filter: blur(.2px);
-      animation: fall linear infinite;
+      background: radial-gradient(circle at 30% 30%, #fff 0%, var(--sakura) 60%, var(--accent2) 100%);
+      opacity:.75; filter: blur(.2px); animation: fall linear infinite;
     }
-    @keyframes fall{
-      0%{ transform: translateY(-8vh) translateX(0) rotate(0) }
-      100%{ transform: translateY(110vh) translateX(60px) rotate(360deg) }
-    }
+    @keyframes fall{ 0%{ transform: translateY(-8vh) } 100%{ transform: translateY(110vh) translateX(60px) rotate(360deg) } }
 
-    /* UI */
-    .muted{ color:var(--muted) }
-    .card{
-      position:relative; background:var(--panel);
-      border:1px solid rgba(255,255,255,.08); border-radius:1.1rem;
-      transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease, background-color .35s ease;
-      overflow:hidden; will-change: transform, box-shadow;
-    }
-    .card:hover{ transform: translateY(-4px); border-color:rgba(255,255,255,.22); box-shadow: var(--glow), var(--glow-pink) }
-    .card::before{
-      content:""; position:absolute; inset:-1px; border-radius:inherit;
-      background: conic-gradient(from 210deg, transparent, rgba(255,122,24,.25), rgba(255,79,139,.25), transparent);
-      opacity:0; filter:blur(14px); transition:opacity .35s ease;
-    }
-    .card:hover::before{ opacity:1 }
-
-    .chip{ border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04) }
-
-    .btn{ display:inline-flex; align-items:center; gap:.6rem; padding:.82rem 1.12rem; border-radius:1rem;
-      border:1px solid rgba(255,255,255,.14); background:#141926;
-      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease, background-color .25s ease }
-    .btn:hover{ border-color:rgba(255,255,255,.24); transform:translateY(-2px) }
-    .btn-primary{
-      background:linear-gradient(90deg,var(--accent),var(--sakura-strong));
-      color:#0D1117; border-color:transparent; box-shadow:var(--glow)
-    }
-    .btn-primary:hover{ box-shadow: var(--glow), 0 0 0 6px rgba(255,79,139,.18) }
-
-    .navlink{ position:relative }
-    .navlink::after{
-      content:""; position:absolute; left:0; bottom:-6px; height:2px; width:0%;
-      background: linear-gradient(90deg,var(--accent),var(--sakura-strong));
-      transition: width .25s ease
-    }
+    /* навігація */
+    header{ position:sticky; top:0; z-index:20; backdrop-filter:saturate(1.05) blur(6px) }
+    .nav{ display:flex; height:64px; align-items:center; justify-content:space-between }
+    .nav a{ text-decoration:none }
+    .navlink{ position:relative; margin-left:24px; color:var(--text); font-weight:600; opacity:.86 }
+    .navlink:hover{ opacity:1 }
+    .navlink::after{ content:""; position:absolute; left:0; bottom:-6px; height:2px; width:0; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width .25s ease }
     .navlink:hover::after{ width:100% }
 
-    .gradient-text{
-      background: linear-gradient(90deg, var(--accent), var(--sakura-strong));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-      background-size: 220% 100%; animation: gradientShift 8s ease-in-out infinite;
-    }
-    @keyframes gradientShift{ 0%{background-position:0 50%} 50%{background-position:100% 50%} 100%{background-position:0 50%} }
+    /* кнопки/картки */
+    .btn{ display:inline-flex; align-items:center; gap:.6rem; height:48px; padding:0 20px; border-radius:10px; border:1px solid rgba(255,255,255,.24); background:transparent; color:var(--text); font-weight:800; transition:.25s ease }
+    .btn:hover{ background:rgba(255,255,255,.06); transform:translateY(-2px) }
+    .btn-primary{ background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#0D1117; border-color:transparent; box-shadow:var(--glow) }
+    .card{ background:var(--panel); border:1px solid rgba(255,255,255,.08); border-radius:1.1rem; transition:.3s ease; overflow:hidden }
+    .card:hover{ transform:translateY(-4px); border-color:rgba(255,255,255,.22); box-shadow:var(--glow) }
+    .chip{ border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04) }
 
-    /* Плавні появи з затримками */
+    /* HERO — як у макеті */
+    .hero{ min-height:calc(100vh - 64px); display:grid; place-items:center; text-align:center; position:relative }
+    .hero-inner{ max-width:900px; padding:48px 0 }
+    .title{ font-weight:800; line-height:1.05; font-size:clamp(40px, 7vw, 88px); margin:0 0 16px }
+    .subtitle{ margin:0 0 28px; font-size:clamp(16px, 2.2vw, 22px); color:var(--text); opacity:.92 }
+
+    /* стрілка вниз + bounce-once */
+    .arrow-wrap{ position:absolute; left:50%; transform:translateX(-50%); bottom:28px }
+    .arrow{ width:44px; height:44px; border-radius:999px; border:1px solid rgba(255,255,255,.25); display:grid; place-items:center; cursor:pointer; background:transparent }
+    .arrow svg{ width:20px; height:20px; fill:currentColor; color:var(--text) }
+    @keyframes bounceOnce{ 0%{transform:translate(-50%,0)}25%{transform:translate(-50%,-16px)}45%{transform:translate(-50%,0)}65%{transform:translate(-50%,-8px)}82%{transform:translate(-50%,0)}92%{transform:translate(-50%,-4px)}100%{transform:translate(-50%,0)} }
+    .arrow-wrap.bounce{ animation: bounceOnce 900ms cubic-bezier(.22,.72,.37,1) both }
+
+    /* секції нижче — наші попередні (можеш наповнювати) */
+    section.section{ padding:96px 0; border-top:1px solid rgba(255,255,255,.08) }
+    h2{ margin:0 0 16px; font-size:32px }
+
+    /* reveal safe-mode: працює лише коли є .js на <html>, інакше все видно */
     @media (prefers-reduced-motion:no-preference){
-      .reveal{ opacity:0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease }
-      .reveal.is-visible{ opacity:1; transform: translateY(0) }
-      .fade-right{ transform: translateX(-18px) }
-      .fade-right.is-visible{ transform: translateX(0) }
-      .scale-in{ transform: scale(.96) }
-      .scale-in.is-visible{ transform: scale(1) }
+      .js .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease }
+      .js .reveal.is-visible{ opacity:1; transform:translateY(0) }
+      .js .fade-right{ transform:translateX(-18px) }
+      .js .fade-right.is-visible{ transform:translateX(0) }
+      .js .scale-in{ transform:scale(.96) }
+      .js .scale-in.is-visible{ transform:scale(1) }
     }
-
-    /* Сітка героя */
-    .hero-grid{ display:grid; gap:3rem; grid-template-columns:1fr }
-    @media (min-width: 900px){ .hero-grid{ grid-template-columns:1.05fr .95fr } }
-    .cards-grid{ display:grid; gap:1rem; grid-template-columns:1fr }
-    @media (min-width: 580px){ .cards-grid{ grid-template-columns:repeat(2,minmax(0,1fr)) } }
   </style>
 </head>
 <body>
-  <!-- Фонова сцена: гілки + пелюстки -->
+  <!-- Фонова сцена -->
   <div class="scene" aria-hidden="true">
-    <!-- Sakura branches (простий SVG) -->
     <svg class="branch-left" viewBox="0 0 400 260">
       <path d="M10,240 C120,220 160,160 240,120 C300,90 350,60 390,20" fill="none" stroke="#2a3344" stroke-width="18" stroke-linecap="round"/>
-      <g fill="#FFB7C5">
-        <circle cx="120" cy="200" r="10"/><circle cx="150" cy="180" r="8"/><circle cx="190" cy="160" r="11"/>
-        <circle cx="220" cy="140" r="9"/><circle cx="260" cy="120" r="10"/><circle cx="300" cy="95" r="9"/>
-      </g>
-      <g fill="#FF4F8B" opacity=".8">
-        <circle cx="135" cy="190" r="4"/><circle cx="210" cy="150" r="4"/><circle cx="285" cy="110" r="4"/>
-      </g>
+      <g fill="#FFB7C5"><circle cx="120" cy="200" r="10"/><circle cx="150" cy="180" r="8"/><circle cx="190" cy="160" r="11"/><circle cx="220" cy="140" r="9"/><circle cx="260" cy="120" r="10"/><circle cx="300" cy="95" r="9"/></g>
+      <g fill="#FF4F8B" opacity=".8"><circle cx="135" cy="190" r="4"/><circle cx="210" cy="150" r="4"/><circle cx="285" cy="110" r="4"/></g>
     </svg>
     <svg class="branch-right" viewBox="0 0 400 260">
       <path d="M10,240 C120,220 160,160 240,120 C300,90 350,60 390,20" fill="none" stroke="#233043" stroke-width="18" stroke-linecap="round"/>
-      <g fill="#FFB7C5">
-        <circle cx="120" cy="200" r="10"/><circle cx="150" cy="180" r="8"/><circle cx="190" cy="160" r="11"/>
-        <circle cx="220" cy="140" r="9"/><circle cx="260" cy="120" r="10"/><circle cx="300" cy="95" r="9"/>
-      </g>
-      <g fill="#FF4F8B" opacity=".8">
-        <circle cx="135" cy="190" r="4"/><circle cx="210" cy="150" r="4"/><circle cx="285" cy="110" r="4"/>
-      </g>
+      <g fill="#FFB7C5"><circle cx="120" cy="200" r="10"/><circle cx="150" cy="180" r="8"/><circle cx="190" cy="160" r="11"/><circle cx="220" cy="140" r="9"/><circle cx="260" cy="120" r="10"/><circle cx="300" cy="95" r="9"/></g>
+      <g fill="#FF4F8B" opacity=".8"><circle cx="135" cy="190" r="4"/><circle cx="210" cy="150" r="4"/><circle cx="285" cy="110" r="4"/></g>
     </svg>
-
-    <!-- кілька пелюсток -->
     <div class="petal" style="left:5%; animation-duration:11s;"></div>
     <div class="petal" style="left:18%; animation-duration:13s; animation-delay:1s;"></div>
     <div class="petal" style="left:33%; animation-duration:14s; animation-delay:2s;"></div>
@@ -147,177 +113,85 @@
   </div>
 
   <!-- Header -->
-  <header class="sticky top-0 z-30 backdrop-blur supports-[backdrop-filter]:bg-black/35">
-    <div class="mx-auto max-w-6xl px-4">
-      <div class="flex h-16 items-center justify-between">
-        <a href="#top" class="font-extrabold tracking-tight text-lg">0x-<span class="gradient-text">mythos</span></a>
-        <nav class="hidden md:flex items-center gap-7">
-          <a href="#about" class="navlink muted hover:text-white transition-colors">About</a>
-          <a href="#skills" class="navlink muted hover:text-white transition-colors">Skills</a>
-          <a href="#experience" class="navlink muted hover:text-white transition-colors">Experience</a>
-          <a href="#contact" class="navlink muted hover:text-white transition-colors">Contact</a>
+  <header>
+    <div class="container">
+      <div class="nav">
+        <a href="#home" class="font-extrabold tracking-tight" style="font-size:18px; color:var(--text); text-decoration:none">0x-<span style="background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent">mythos</span></a>
+        <nav class="links">
+          <a class="navlink" href="#about">About</a>
+          <a class="navlink" href="#skills">Skills</a>
+          <a class="navlink" href="#experience">Experience</a>
+          <a class="navlink" href="#contact">Contact</a>
         </nav>
-        <a href="#contact" class="btn btn-primary">Hire me</a>
       </div>
     </div>
   </header>
 
-  <!-- Hero -->
-  <main id="top">
-    <section class="py-20 md:py-28">
-      <div class="mx-auto max-w-6xl px-4 hero-grid items-center">
-        <div>
-          <span class="chip inline-flex px-3 py-1 rounded-full text-sm muted mb-5 reveal" data-reveal-delay="60">
-            Community • Moderation • Web Tools
-          </span>
-          <h1 class="text-4xl md:text-6xl font-extrabold leading-tight reveal" data-reveal-delay="100">
-            Community Manager & <span class="gradient-text">Web3-tools Builder</span>
-          </h1>
-          <p class="muted mt-4 text-lg reveal" data-reveal-delay="160">
-            I help projects launch, moderate and grow thriving communities. I also build handy bots and ops tools for Discord, Telegram and the web.
-          </p>
-          <div class="mt-7 flex flex-wrap gap-3 reveal" data-reveal-delay="220">
-            <a href="#contact" class="btn btn-primary">Let’s work</a>
-            <a href="#experience" class="btn">See experience</a>
-            <a href="#skills" class="btn">Tech stack</a>
-          </div>
+  <!-- Hero (структура з макета) -->
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-inner container">
+        <h1 class="title">A1x</h1>
+        <p class="subtitle">Community Manager / Moderator / Ambassador / Web3 builder</p>
+        <a class="btn btn-primary" href="#contact">Contact with me</a>
+      </div>
 
-          <div class="mt-9 grid grid-cols-3 gap-4">
-            <div class="card p-5 text-center reveal scale-in" data-reveal-delay="80">
-              <div class="text-3xl font-extrabold tabular-nums">2+</div>
-              <div class="muted text-sm">Years in Web3</div>
-            </div>
-            <div class="card p-5 text-center reveal scale-in" data-reveal-delay="140">
-              <div class="text-3xl font-extrabold tabular-nums">30+</div>
-              <div class="muted text-sm">Projects supported</div>
-            </div>
-            <div class="card p-5 text-center reveal scale-in" data-reveal-delay="200">
-              <div class="text-3xl font-extrabold tabular-nums">10+</div>
-              <div class="muted text-sm">Bots & tools built</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="cards-grid">
-          <div class="card p-5 flex flex-col gap-3 reveal fade-right" data-reveal-delay="60">
-            <div class="font-semibold">What I do</div>
-            <ul class="list-disc list-inside muted space-y-1">
-              <li>Community playbooks</li>
-              <li>Moderation & support</li>
-              <li>Launch campaigns</li>
-              <li>Feedback loops</li>
-            </ul>
-          </div>
-
-          <div class="card p-5 flex flex-col gap-3 reveal fade-right" data-reveal-delay="120">
-            <div class="font-semibold">Automations</div>
-            <ul class="list-disc list-inside muted space-y-1">
-              <li>Discord/Telegram bots</li>
-              <li>Onboarding flows</li>
-              <li>Role sync & logs</li>
-              <li>Ops dashboards</li>
-            </ul>
-          </div>
-
-          <div class="card p-5 flex flex-col gap-3 reveal" data-reveal-delay="180" style="grid-column: span 2">
-            <div class="font-semibold">Highlights</div>
-            <ul class="grid sm:grid-cols-2 gap-2 muted">
-              <li class="chip rounded-lg px-3 py-2">AMA hosting</li>
-              <li class="chip rounded-lg px-3 py-2">Content & docs</li>
-              <li class="chip rounded-lg px-3 py-2">Event org</li>
-              <li class="chip rounded-lg px-3 py-2">Partner relations</li>
-            </ul>
-          </div>
-        </div>
+      <!-- стрілка вниз із bounce, скролить до About -->
+      <div class="arrow-wrap" id="heroArrow">
+        <a class="arrow" href="#about" aria-label="Scroll to About">
+          <svg viewBox="0 0 24 24"><path d="M12 15.5c-.26 0-.51-.1-.71-.29l-6-6a1 1 0 0 1 1.42-1.42L12 12.59l5.29-5.3a1 1 0 1 1 1.42 1.42l-6 6c-.2.19-.45.29-.71.29z"/></svg>
+        </a>
       </div>
     </section>
 
     <!-- About -->
-    <section id="about" class="py-20 border-t border-white/5">
-      <div class="mx-auto max-w-5xl px-4 grid md:grid-cols-3 gap-10">
-        <div class="md:col-span-1 reveal"><h2 class="text-2xl md:text-3xl font-bold">About</h2></div>
-        <div class="md:col-span-2 space-y-4 reveal">
-          <p class="muted">I’m a community-first operator. My focus is setting up clear processes, healthy moderation and analytics so teams can scale without chaos.</p>
-          <p class="muted">Comfortable working async, across time zones, and jumping from strategy to hands-on support.</p>
-          <div class="flex flex-wrap gap-2">
-            <span class="chip rounded-lg px-3 py-1 text-sm">Remote-ready</span>
-            <span class="chip rounded-lg px-3 py-1 text-sm">English / UA / RU</span>
-            <span class="chip rounded-lg px-3 py-1 text-sm">GMT+2 (flex)</span>
-          </div>
-        </div>
+    <section id="about" class="section">
+      <div class="container">
+        <h2>About</h2>
+        <p class="muted">Короткий опис — 2–3 речення. Потім додамо деталізацію/метрики.</p>
       </div>
     </section>
 
     <!-- Skills -->
-    <section id="skills" class="py-20 border-t border-white/5">
-      <div class="mx-auto max-w-6xl px-4">
-        <h2 class="text-2xl md:text-3xl font-bold mb-8 reveal">Skills</h2>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div class="card p-5 reveal">
-            <div class="font-semibold mb-2">Community</div>
-            <ul class="muted space-y-1 list-disc list-inside">
-              <li>Moderation frameworks</li><li>Support SLAs</li><li>Onboarding journeys</li><li>Metrics & health checks</li>
-            </ul>
-          </div>
-          <div class="card p-5 reveal">
-            <div class="font-semibold mb-2">Content</div>
-            <ul class="muted space-y-1 list-disc list-inside">
-              <li>Announcements & docs</li><li>Tutorials & FAQs</li><li>Twitter/Discord comms</li><li>Blog editing</li>
-            </ul>
-          </div>
-          <div class="card p-5 reveal">
-            <div class="font-semibold mb-2">Automation</div>
-            <ul class="muted space-y-1 list-disc list-inside">
-              <li>Discord/Telegram bots</li><li>No-code tools (Sheets, Zapier)</li><li>Basic scripting</li><li>Dashboards</li>
-            </ul>
-          </div>
-          <div class="card p-5 reveal">
-            <div class="font-semibold mb-2">Ops</div>
-            <ul class="muted space-y-1 list-disc list-inside">
-              <li>Playbooks & roles</li><li>Incident response</li><li>QA & audits</li><li>Hiring & onboarding</li>
-            </ul>
-          </div>
-          <div class="card p-5 reveal">
-            <div class="font-semibold mb-2">Design</div>
-            <ul class="muted space-y-1 list-disc list-inside">
-              <li>Structure & IA</li><li>Wireframes</li><li>Brand consistency</li><li>Accessibility basics</li>
-            </ul>
-          </div>
-          <div class="card p-5 reveal">
-            <div class="font-semibold mb-2">Tools</div>
-            <ul class="muted space-y-1 list-disc list-inside">
-              <li>Discord / Telegram</li><li>Notion / Linear</li><li>Figma</li><li>Google Suite</li>
-            </ul>
-          </div>
+    <section id="skills" class="section">
+      <div class="container">
+        <h2>Skills</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="card p-5">Community, moderation, health metrics.</div>
+          <div class="card p-5">Content: announcements, tutorials, docs.</div>
+          <div class="card p-5">Automation: Discord/Telegram bots, no-code.</div>
+          <div class="card p-5">Ops: incident response, QA, hiring.</div>
+          <div class="card p-5">Design: IA, wireframes, accessibility basics.</div>
+          <div class="card p-5">Tools: Discord, Notion, Linear, Figma.</div>
         </div>
       </div>
     </section>
 
     <!-- Experience -->
-    <section id="experience" class="py-20 border-t border-white/5">
-      <div class="mx-auto max-w-6xl px-4">
-        <h2 class="text-2xl md:text-3xl font-bold mb-8 reveal">Experience</h2>
+    <section id="experience" class="section">
+      <div class="container">
+        <h2>Experience</h2>
         <div class="space-y-4">
-          <article class="card p-5 reveal">
+          <article class="card p-5">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-              <h3 class="font-semibold text-lg">Community Manager — Project Alpha</h3>
-              <span class="muted text-sm">2024 — Present • Remote</span>
+              <strong>Community Manager — Project Alpha</strong>
+              <span class="muted">2024 — Present • Remote</span>
             </div>
-            <ul class="muted list-disc list-inside mt-2 space-y-1">
+            <ul class="muted list-disc list-inside mt-2">
               <li>Built moderation playbook and staffing plan.</li>
-              <li>Shipped onboarding bot that reduced support load by 32%.</li>
+              <li>Onboarding bot reduced support load by 32%.</li>
               <li>Hosted monthly AMAs with 1–3k viewers.</li>
             </ul>
           </article>
-          <article class="card p-5 reveal">
+          <article class="card p-5">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-              <h3 class="font-semibold text-lg">Moderator / Ambassador — Project Beta</h3>
-              <span class="muted text-sm">2023 — 2024 • Hybrid</span>
+              <strong>Moderator / Ambassador — Project Beta</strong>
+              <span class="muted">2023 — 2024 • Hybrid</span>
             </div>
-            <ul class="muted list-disc list-inside mt-2 space-y-1">
-              <li>Handled incident response and escalations (24/7 rota).</li>
-              <li>Produced tutorials and FAQ library.</li>
-              <li>Organized themed community events and contests.</li>
+            <ul class="muted list-disc list-inside mt-2">
+              <li>Incident response & escalations (24/7 rota).</li>
+              <li>Tutorials and FAQ library.</li>
+              <li>Community events and contests.</li>
             </ul>
           </article>
         </div>
@@ -325,21 +199,20 @@
     </section>
 
     <!-- Contact -->
-    <section id="contact" class="py-20 border-t border-white/5">
-      <div class="mx-auto max-w-4xl px-4">
-        <h2 class="text-2xl md:text-3xl font-bold mb-6 reveal">Contact</h2>
-        <p class="muted mb-4 reveal">Open to community ops, moderation and tooling gigs. Best way to reach me:</p>
-        <div class="grid sm:grid-cols-2 gap-4">
-          <a class="card p-4 hover:border-white/20 transition-colors reveal" href="mailto:you@example.com" target="_blank" rel="noreferrer">
+    <section id="contact" class="section">
+      <div class="container">
+        <h2>Contact</h2>
+        <div class="grid sm:grid-cols-2 gap-6">
+          <a class="card p-4 hover:border-white/20 transition-colors" href="mailto:you@example.com" target="_blank" rel="noreferrer">
             <div class="font-semibold">Email</div><div class="muted">you@example.com</div>
           </a>
-          <a class="card p-4 hover:border-white/20 transition-colors reveal" href="https://t.me/yourhandle" target="_blank" rel="noreferrer">
+          <a class="card p-4 hover:border-white/20 transition-colors" href="https://t.me/yourhandle" target="_blank" rel="noreferrer">
             <div class="font-semibold">Telegram</div><div class="muted">@yourhandle</div>
           </a>
-          <a class="card p-4 hover:border-white/20 transition-colors reveal" href="https://discordapp.com/users/yourid" target="_blank" rel="noreferrer">
+          <a class="card p-4 hover:border-white/20 transition-colors" href="https://discordapp.com/users/yourid" target="_blank" rel="noreferrer">
             <div class="font-semibold">Discord</div><div class="muted">yourname#1234</div>
           </a>
-          <a class="card p-4 hover:border-white/20 transition-colors reveal" href="https://x.com/yourhandle" target="_blank" rel="noreferrer">
+          <a class="card p-4 hover:border-white/20 transition-colors" href="https://x.com/yourhandle" target="_blank" rel="noreferrer">
             <div class="font-semibold">X (Twitter)</div><div class="muted">@yourhandle</div>
           </a>
         </div>
@@ -348,47 +221,58 @@
   </main>
 
   <footer class="py-10 border-t border-white/5">
-    <div class="mx-auto max-w-6xl px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="container flex flex-col sm:flex-row items-center justify-between gap-3">
       <p class="muted text-sm">© <span id="y"></span> 0x-mythos. All rights reserved.</p>
       <div class="muted text-sm">Built with HTML + TailwindCDN</div>
     </div>
   </footer>
 
   <script>
-    // Поточний рік
+    // рік
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Появи з IntersectionObserver + стаґер
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(!prefersReduced){
-      const items = [...document.querySelectorAll('.reveal')];
+    // одноразовий bounce стрілки після рендеру
+    const arrowWrap = document.getElementById('heroArrow');
+    requestAnimationFrame(() => setTimeout(() => arrowWrap.classList.add('bounce'), 220));
+
+    // on-scroll reveal (safe-mode)
+    (function(){
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(prefersReduced || !document.documentElement.classList.contains('js')) return;
+      const items = Array.from(document.querySelectorAll('.reveal'));
+      if(!items.length) return;
       const io = new IntersectionObserver((entries)=>{
         entries.forEach(e=>{
           if(e.isIntersecting){
-            const delay = Number(e.target.dataset.revealDelay || 0);
-            setTimeout(()=>{ e.target.classList.add('is-visible') }, delay);
+            const d = Number(e.target.dataset.revealDelay || 0);
+            setTimeout(()=>e.target.classList.add('is-visible'), d);
             io.unobserve(e.target);
           }
         });
       },{ threshold:.16 });
       items.forEach(el=>io.observe(el));
-    }
+    })();
 
-    // Активний пункт меню
-    const sections = [...document.querySelectorAll('section[id]')];
-    const navLinks = [...document.querySelectorAll('header nav a')];
-    const byId = id => navLinks.find(a => a.getAttribute('href') === `#${id}`);
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        const a = byId(e.target.id);
-        if (!a) return;
-        if (e.isIntersecting) {
-          navLinks.forEach(n => n.classList.remove('text-white'));
-          a.classList.add('text-white');
-        }
-      });
-    }, { threshold: .5 });
-    sections.forEach(s => obs.observe(s));
+    // активний пункт меню
+    (function(){
+      const sections = Array.from(document.querySelectorAll('section[id]'));
+      const navLinks = Array.from(document.querySelectorAll('header .navlink'));
+      const find = id => navLinks.find(a => a.getAttribute('href') === `#${id}`);
+      if(!sections.length) return;
+      const obs = new IntersectionObserver(entries=>{
+        entries.forEach(e=>{
+          const a = find(e.target.id);
+          if(!a) return;
+          if(e.isIntersecting){
+            navLinks.forEach(n=>n.style.opacity="0.86");
+            a.style.opacity="1";
+          }
+        });
+      },{ threshold:.5 });
+      sections.forEach(s=>obs.observe(s));
+    })();
+
+    console.log('Merged layout loaded ✅');
   </script>
 </body>
 </html>
